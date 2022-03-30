@@ -37,14 +37,22 @@ const Cat = mongoose.model('Cat', {
 // }
 
 //!  Delete Method
-// await Cat.deleteOne({name: 'HelloKitty'});
+// await Cat.deleteOne({name: 'Ben'});
 
 
 
 //! Update Methods
 
 //! The below line works
-// await Cat.findOne({ name: 'Macey'}).updateOne({name: 'Zelinski'});
+// await Cat.findOne({ name: 'Cherrelle'}).updateOne({name: 'Huuuya', age: 18});
+
+
+//! Below also works but is more streamlined because you only use the one method.
+//     try {
+//     await Cat.updateOne({ name: "bobbie" }, { name: "bob", age: 24 });
+//   } catch (error) {
+//     console.log(`error name does not exist ${error}`);
+//   }
 
 
 
@@ -59,20 +67,12 @@ const Cat = mongoose.model('Cat', {
 
  
 
-// async function Update () {
-// let update = await Cat.findOne({ name: 'Kurt'}).update({name: 'Kurt'});
-
-
-
-
-// }
-
-// await Cat.findOneAndUpdate()
 
 
 //! List
 
-// return await Cat.find({});
+  const catList = await Cat.find({ Cat });
+    console.log({catList});
 
 
 //Find a specific element by ID
