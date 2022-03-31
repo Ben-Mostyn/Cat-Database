@@ -1,5 +1,9 @@
 require("dotenv").config();
 
+const yargs = require("yargs");
+const { hideBin } = require("yargs/helpers");
+const argv = yargs(hideBin(process.argv));
+
 const mongoose = require("mongoose");
 
 
@@ -9,18 +13,28 @@ const mongoose = require("mongoose");
 //Sets up a connection with database
 mongoose.connect(process.env.MONGO_URI);
 
+const Movies = mongoose.model("Movie", {
+    //   unique is a restraint
+    Title: { type: String, unique: true },
+    Actor: { type: String, unique: false },
+    Year: Number,
+    Genre: String,
+    Rating: {
+      type: Number,
+      min: 1,
+      max: 5,
+    },
+    Director: String,
+  });
+
+
+//! Adding Movie
+console.log(argv.Title);
+  const movie = new Movies({ Title: argv.Title });
+
 
 
 //Model, which is similar to an Object
-const Cat = mongoose.model('Cat', {
-    name: { type: String, unique: true },
-    breed: String,
-    age: {type: Number, min: 1, max: 100, validate: {
-        validator: num => num % 2 === 0, message: props => `${props.value} is not even`
-    }},
-    
-});
-
 
 //! Add a new Cat............ save() adds it to the database!
 // try {
@@ -71,8 +85,8 @@ const Cat = mongoose.model('Cat', {
 
 //! List
 
-  const catList = await Cat.find({ Cat });
-    console.log({catList});
+//   const catList = await Cat.find({ Cat });
+//     console.log({catList});
 
 
 //Find a specific element by ID
