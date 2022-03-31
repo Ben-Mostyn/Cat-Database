@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const yargs = require("yargs");
 const { hideBin } = require("yargs/helpers");
-const argv = yargs(hideBin(process.argv));
+const argv = yargs(hideBin(process.argv)).argv;
 
 const mongoose = require("mongoose");
 
@@ -13,25 +13,58 @@ const mongoose = require("mongoose");
 //Sets up a connection with database
 mongoose.connect(process.env.MONGO_URI);
 
-const Movies = mongoose.model("Movie", {
+const Movie = mongoose.model("Movie", {
     //   unique is a restraint
-    Title: { type: String, unique: true },
-    Actor: { type: String, unique: false },
-    Year: Number,
-    Genre: String,
-    Rating: {
+    title: { type: String, unique: true },
+    actor: { type: String, unique: false },
+    year: Number,
+    genre: String,
+    rating: {
       type: Number,
       min: 1,
       max: 5,
     },
-    Director: String,
+    director: String,
   });
+  
 
-
+// ! how to add a MOVIE object
+  // npm start --title --actor --year --genre --rating --director 
+  //npm start --findOne --title "titlename"
 //! Adding Movie
-console.log(argv.Title);
-  const movie = new Movies({ Title: argv.Title });
 
+if(argv.add) {
+  const movies = new Movie({ 
+     title: argv.title,
+     actor: argv.actor,
+     year: argv.year,
+     genre: argv.genre,
+     rating: argv.rating,
+     director: argv.director,
+    }); 
+    await movies.save();
+}   else if(argv.findOne){
+        const foundMovie = await Movie.findOne({title: argv.title});
+            console.log("Movie", foundMovie);
+} 
+
+    else if (argv.deleteOne) {
+        const deleteMovie = await Movie.deleteOne({title: argv.title});
+            console.log(`${argv.title} has been deleted`)
+} 
+
+    else if (argv.updateOne) {
+        const updateMovie = await Movie.findOne({ title: argv.title }).updateOne({title: argv.updatedTitle});
+            console.log(`${argv.title} has been updated to ${argv.updatedTitle}`);
+  } 
+  else if(argv.list){
+      const listedMovies = await Movie.find({ Movie })
+      console.log({ listedMovies });
+  }
+
+  ///   const catList = await Cat.find({ Cat });
+//     console.log({catList});
+    
 
 
 //Model, which is similar to an Object
