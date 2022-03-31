@@ -30,7 +30,6 @@ const Movie = mongoose.model("Movie", {
 
 // ! how to add a MOVIE object
   // npm start --title --actor --year --genre --rating --director 
-  //npm start --findOne --title "titlename"
 //! Adding Movie
 
 if(argv.add) {
@@ -43,20 +42,25 @@ if(argv.add) {
      director: argv.director,
     }); 
     await movies.save();
-}   else if(argv.findOne){
+}  
+//! node index.js --findOne --title "existing title"
+else if(argv.findOne){
         const foundMovie = await Movie.findOne({title: argv.title});
             console.log("Movie", foundMovie);
 } 
+//! node index.js --deleteOne --title "Existing Title"
 
     else if (argv.deleteOne) {
         const deleteMovie = await Movie.deleteOne({title: argv.title});
             console.log(`${argv.title} has been deleted`)
 } 
-
+//! node index.js --updateOne --title "existing title" --updatedTitle "New Title Name"
     else if (argv.updateOne) {
         const updateMovie = await Movie.findOne({ title: argv.title }).updateOne({title: argv.updatedTitle});
             console.log(`${argv.title} has been updated to ${argv.updatedTitle}`);
-  } 
+  }
+  
+  //! node index.js --list
   else if(argv.list){
       const listedMovies = await Movie.find({ Movie })
       console.log({ listedMovies });
