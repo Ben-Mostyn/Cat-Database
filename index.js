@@ -46,7 +46,7 @@ if(argv.add) {
 //! node index.js --findOne --title "existing title"
 else if(argv.findOne){
         const foundMovie = await Movie.findOne({title: argv.title});
-            console.log("Movie", foundMovie);
+            console.log(`You have selected ${argv.title}`);
 } 
 //! node index.js --deleteOne --title "Existing Title"
 
