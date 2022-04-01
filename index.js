@@ -1,11 +1,14 @@
 require("dotenv").config();
-
 const yargs = require("yargs");
 const { hideBin } = require("yargs/helpers");
 const argv = yargs(hideBin(process.argv)).argv;
-
 const mongoose = require("mongoose");
 
+//! This is how you Import the model
+const Movie = require('./models/Movie.js');
+const add = require('./utils/add');
+const find  = require("./utils/find");
+const remove = require('./utils/delete');
 
 
 (async () => {
@@ -13,46 +16,25 @@ const mongoose = require("mongoose");
 //Sets up a connection with database
 mongoose.connect(process.env.MONGO_URI);
 
-const Movie = mongoose.model("Movie", {
-    //   unique is a restraint
-    title: { type: String, unique: true },
-    actor: { type: String, unique: false },
-    year: Number,
-    genre: String,
-    rating: {
-      type: Number,
-      min: 1,
-      max: 5,
-    },
-    director: String,
-  });
-  
-
 // ! how to add a MOVIE object
-  // npm start --title --actor --year --genre --rating --director 
+  // npm start --add --title --actor --year --genre --rating --director 
 //! Adding Movie
 
 if(argv.add) {
-  const movies = new Movie({ 
-     title: argv.title,
-     actor: argv.actor,
-     year: argv.year,
-     genre: argv.genre,
-     rating: argv.rating,
-     director: argv.director,
-    }); 
-    await movies.save();
-}  
-//! node index.js --findOne --title "existing title"
-else if(argv.findOne){
-        const foundMovie = await Movie.findOne({title: argv.title});
-            console.log(`You have selected ${argv.title}`);
-} 
-//! node index.js --deleteOne --title "Existing Title"
+  await add(argv);
+    
+}
 
-    else if (argv.deleteOne) {
-        const deleteMovie = await Movie.deleteOne({title: argv.title});
-            console.log(`${argv.title} has been deleted`)
+//! node index.js --findOne --title "existing title"
+else if(argv.find){
+  await find(argv);
+        // const foundMovie = await Movie.findOne({title: argv.title});
+        //     console.log(`You have selected ${argv.title}`);
+} 
+//! node index.js --remove --title "Existing Title"
+
+    else if (argv.remove) {
+        await remove(argv);
 } 
 //! node index.js --updateOne --title "existing title" --updatedTitle "New Title Name"
     else if (argv.updateOne) {
