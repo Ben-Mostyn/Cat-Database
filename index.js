@@ -22,19 +22,17 @@ mongoose.connect(process.env.MONGO_URI);
 
 if(argv.add) {
   await add(argv);
-    
 }
 
-//! node index.js --findOne --title "existing title"
+//! node index.js --find --fineOne --key "Chosen key" --value "existing property "
 else if(argv.find){
-  await find(argv);
-        // const foundMovie = await Movie.findOne({title: argv.title});
-        //     console.log(`You have selected ${argv.title}`);
+  await find(argv);       
 } 
-//! node index.js --remove --title "Existing Title"
+//! node index.js --remove --removeOne --key "Chosen key" --value "property you want to delete"
+//! switch out --removeOne for --removeMany to delete all items containing the same props
 
     else if (argv.remove) {
-        await remove(argv);
+        await remove(argv, argv.title);
 } 
 //! node index.js --updateOne --title "existing title" --updatedTitle "New Title Name"
     else if (argv.updateOne) {
@@ -48,70 +46,5 @@ else if(argv.find){
       console.log({ listedMovies });
   }
 
-  ///   const catList = await Cat.find({ Cat });
-//     console.log({catList});
-    
-
-
-//Model, which is similar to an Object
-
-//! Add a new Cat............ save() adds it to the database!
-// try {
-//     const cat = new Cat({
-//         name: 15,
-//         breed: 'sphynx',
-//         age: 16
-//     });
-//     await cat.save();
-//     console.log(cat);
-    
-// } catch (error) {
-//     console.log(error);
-// }
-
-//!  Delete Method
-// await Cat.deleteOne({name: 'Ben'});
-
-
-
-//! Update Methods
-
-//! The below line works
-// await Cat.findOne({ name: 'Cherrelle'}).updateOne({name: 'Huuuya', age: 18});
-
-
-//! Below also works but is more streamlined because you only use the one method.
-//     try {
-//     await Cat.updateOne({ name: "bobbie" }, { name: "bob", age: 24 });
-//   } catch (error) {
-//     console.log(`error name does not exist ${error}`);
-//   }
-
-
-
-//  await Cat.findOneAndUpdate({name: 'Kurt'}, {name: 'Macey'}, (error, data) => {
-    
-//     if(error){
-//         console.log(error)
-//     } else{
-//         console.log(data)
-//     }
-//  })
-
- 
-
-
-
-//! List
-
-//   const catList = await Cat.find({ Cat });
-//     console.log({catList});
-
-
-//Find a specific element by ID
-// const foundCat = await Cat.findById('624436c6f9f0c11e47895baf');
-// console.log(foundCat);
-
-// Terminates connection, which allows you to type again in the terminal.
 mongoose.connection.close();
 })();

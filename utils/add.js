@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Movie = require('../models/Movie');
-require("dotenv").config();
+
 
 const add = async ({ title, actor, year, genre, rating, director }) =>{
 await mongoose.connect(process.env.MONGO_URI);
